@@ -13,4 +13,3 @@ Web Development Projects
 **Dynamic Photo Gallery**  
 	A photo gallery application that displays pictures relevant to the term that the user searches for. The application populates the webpage with pictures gathered from pixabay that provides free images. This project uses a mix of HTML, CSS, Bootstrap, jQuery and its AJAX features.
 
-q
