@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+<title>Responsive Photo Gallery</title>
+	
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <!--Include Your Style Sheets next -->
+      <!-- <link rel="stylesheet" type="text/css" href="./style.css"> -->
+
+</head>
+
+<body style="background-color: rgba(125,125,255,.2);">
+	<div class = "container">
+  		
+  		<div class="row">
+  			<div class="col-md-12 text-center">
+				<header>
+					<h1 class="hidden-print"> Welcome to the Dynamic Photo Gallery!</h1>
+	 			 </header>
+	 		</div>
+ 		</div>
+
+ 		<div class="row">
+ 			<div class="col-md-12 text-center">
+ 				<p>To find images, please enter the search term in the search box below and press Enter.</p>
+ 			</div>
+ 		</div>
+ 		
+ 		<div class="row">
+ 			<div class="col-md-12 text-center">
+ 			<input type="text" id="search" value="" placeholder="Search images" data-autofocus>
+ 			</div>
+ 		</div>
+
+ 		<div class="row">
+ 			<div class="col-md-12 text-center" id="totalSearchResults"></div>
+ 		</div>
+
+ 		<div class="row" id="pixabay" style="display: none; margin: 1%;">
+ 			<div>
+ 				<a href="https://pixabay.com/">
+    				<img src="https://pixabay.com/static/img/public/leaderboard_a.png" alt="Pixabay" style="display:block; margin : 0 auto;" class="img-responsive">
+				</a>
+ 			</div>	
+ 		</div>
+
+	 	<div class="row">
+	 		<div class="col-md-12" id="photoGallery"></div>
+	 	</div>
+
+		<div class="row">
+ 			<div class="col-md-12 text-center" style="margin: 2%;">
+  				<footer>
+  					<p>&#169; Muntasir Biojid. All rights reserved.</p>
+  				</footer>
+    	</div>
+
+    <script>
+    	$(document).ready(function() {
+    		$('#search').keypress(function(e) {
+				var key = e.which;
+				// the Enter key code
+				if(key == 13) {	
+			    	var search = $('#search').val();
+			    	console.log("The searched value is: " + search);
+			    	var url = "https://pixabay.com/api/?key=2487856-f0378cfab26fe46305771d46a&q=" + search + "&per_page=52";
+			    	$.ajax({
+			    		url: url,
+			    		success: function(result) {
+			    			$("#pixabay").show();
+			    			console.log(result);
+			    			var totalHits = result["totalHits"];
+			    			$("#totalSearchResults").html("Images found: " + totalHits);
+			    			if (totalHits > 52) {
+			    				console.log("We will consider only the fist 52 of " + totalHits +" pics for our gallery");
+			    				totalHits = 52;
+			    			}
+			    			$("#totalSearchResults").append("&emsp;&emsp;Images displayed: " + totalHits);
+			    			//clear the image div container from previous query results (if any)
+			    			//specify the number of pictures per row
+			    			$("#photoGallery").empty();
+			    			var picsPerRow = 4;
+			    			for(var i = 0; i < totalHits; i++) {
+								var picObject = result["hits"][i];
+								var picUrl = picObject["webformatURL"];
+								if (picsPerRow == 4) {
+							  		var newRow = '<div class="row">';
+							  		$("#photoGallery").append(newRow);
+							  	}
+							 	var htmlImage = '<img src=' + picUrl + ' style="margin: 0.5%; width: 250px; height: 250px;"' + ' class="col-md-4 img-thumbnail">';
+								$("#photoGallery").append(htmlImage);
+								if (picsPerRow == 1) {
+							  		var endRow = '</div>';
+							  		$("#photoGallery").append(endRow);
+							  		picsPerRow = 4;
+							  		continue;
+							    }
+							    picsPerRow--;
+							} 
+			    		},
+			    		error: function(XMLHttpRequest, textStatus, errorThrown) {
+					        alert("Sorry, invalid request.");
+					        console.log("textStatus: " + textStatus + " errorThrown: " + errorThrown);
+					    }
+			    	});
+			  	}
+			});
+    	});
+    </script>
+</body>
+</html>
