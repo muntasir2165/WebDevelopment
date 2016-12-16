@@ -7,7 +7,7 @@ Web Development Projects
 **JavaScript Interactive Photo Gallery**  
 	A simple photo gallery application built with javascript that displays selected images in a bigger frame with overlapping alt text.
 
-**JavaScript Autocomplete with JavaScript**  
+**JavaScript Autocompletion**  
 	This simple project finally made me realize the magic behind automatic input field completion and validation that is so ubiquitous in web forms.
 
 **Dynamic Photo Gallery**  
